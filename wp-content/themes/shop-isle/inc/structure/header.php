@@ -57,7 +57,11 @@ if ( ! function_exists( 'shop_isle_primary_navigation' ) ) {
 					<div class="header-menu-wrap">
 						<div class="collapse navbar-collapse" id="custom-collapse">
 
-							<?php wp_nav_menu( array( 'theme_location' => 'primary', 'container' => false, 'menu_class' => 'nav navbar-nav navbar-right' ) ); ?>
+							<?php wp_nav_menu( array(
+								'theme_location' => 'primary',
+								'container' => false,
+								'menu_class' => 'nav navbar-nav navbar-right',
+							) ); ?>
 
 						</div>
 					</div>
@@ -96,4 +100,4 @@ if ( ! function_exists( 'shop_isle_primary_navigation' ) ) {
 		<!-- Navigation end -->
 		<?php
 	}
-}
+}// End if().

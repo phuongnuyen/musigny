@@ -20,7 +20,20 @@ if ( isset( $shop_isle_banners_hide ) && $shop_isle_banners_hide != 1 ) :
 
 		if ( ( isset( $shop_isle_banners_hide ) && $shop_isle_banners_hide != 1) || is_customize_preview() ) :
 
-			$shop_isle_banners = get_theme_mod( 'shop_isle_banners', json_encode( array( array( 'image_url' => get_template_directory_uri() . '/assets/images/banner1.jpg', 'link' => '#' ), array( 'image_url' => get_template_directory_uri() . '/assets/images/banner2.jpg', 'link' => '#' ), array( 'image_url' => get_template_directory_uri() . '/assets/images/banner3.jpg', 'link' => '#' ) ) ) );
+			$shop_isle_banners = get_theme_mod( 'shop_isle_banners', json_encode( array(
+				array(
+					'image_url' => get_template_directory_uri() . '/assets/images/banner1.jpg',
+					'link' => '#',
+				),
+				array(
+					'image_url' => get_template_directory_uri() . '/assets/images/banner2.jpg',
+					'link' => '#',
+				),
+				array(
+					'image_url' => get_template_directory_uri() . '/assets/images/banner3.jpg',
+					'link' => '#',
+				),
+			) ) );
 
 			if ( ! empty( $shop_isle_banners ) ) :
 

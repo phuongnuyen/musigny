@@ -13,7 +13,7 @@ function shopisle_theme_info_customize_register( $wp_customize ) {
 	// Include theme info control class.
 	require_once( get_template_directory() . '/inc/customizer/class/class-shopisle-info.php' );
 	// Include upsell class.
-	require_once( get_template_directory() . '/inc/customizer/customizer-upsell/class-customizer-upsell-control.php' );
+	require_once( get_template_directory() . '/inc/customizer/customizer-upsell/class-shopisle-control-upsell.php' );
 
 	// Add Theme Info Section.
 	$wp_customize->add_section( 'shopisle_pro_features_section', array(

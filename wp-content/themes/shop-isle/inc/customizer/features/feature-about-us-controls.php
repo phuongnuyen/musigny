@@ -11,18 +11,7 @@
  */
 function shop_isle_about_us_page_customize_register( $wp_customize ) {
 
-	/**
-	 * Class ShopIsle_Aboutus_Page_Instructions
-	 */
-	class ShopIsle_Aboutus_Page_Instructions extends WP_Customize_Control {
-
-		/**
-		 * Render Content Function
-		 */
-		public function render_content() {
-			echo __( 'To customize the About us Page you need to first select the template "About us page" for the page you want to use for this purpose. Then open that page in the browser and press "Customize" in the top bar.', 'shop-isle' ) . '<br><br>' . sprintf( __( 'Need further informations? Check this %1$s', 'shop-isle' ), sprintf( '<a href="http://docs.themeisle.com/article/211-shopisle-customizing-the-contact-and-about-us-page" target="_blank">%s</a>',  __( 'doc', 'shop-isle' ) ) );
-		}
-	}
+	require_once( trailingslashit( get_template_directory() ) . 'inc/customizer/class/class-shopisle-aboutus-page-instructions.php' );
 
 	/*  About us page  */
 

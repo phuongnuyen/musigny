@@ -23,7 +23,11 @@ get_header(); ?>
 					<div class="container">
 						<div class="row">
 							<div class="col-sm-6 col-sm-offset-3">
-								<h1 class="module-title font-alt"><?php printf( __( 'Search Results for: %s', 'shop-isle' ), '<span>' . get_search_query() . '</span>' ); ?></h1>
+								<h1 class="module-title font-alt"><?php printf(
+									/* translators: s: Search term. */
+								        __( 'Search Results for: %s', 'shop-isle' ),
+									'<span>' . get_search_query() . '</span>'
+								); ?></h1>
 							</div>
 						</div>
 					</div><!-- .container -->

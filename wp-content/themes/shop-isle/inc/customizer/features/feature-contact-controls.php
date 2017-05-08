@@ -11,21 +11,9 @@
  */
 function shop_isle_contact_page_customize_register( $wp_customize ) {
 
-	/**
-	 * Class ShopIsle_Contact_Page_Instructions
-	 */
-	class ShopIsle_Contact_Page_Instructions extends WP_Customize_Control {
-
-		/**
-		 * Render Content Function
-		 */
-		public function render_content() {
-			echo __( 'To customize the Contact Page you need to first select the template "Contact page" for the page you want to use for this purpose. Then open that page in the browser and press "Customize" in the top bar.','shop-isle' ) . '<br><br>' . sprintf( __( 'Need further informations? Check this %1$s','shop-isle' ), sprintf( '<a href="http://docs.themeisle.com/article/211-shopisle-customizing-the-contact-and-about-us-page" target="_blank">%s</a>',  __( 'doc','shop-isle' ) ) );
-		}
-	}
+	require_once( trailingslashit( get_template_directory() ) . 'inc/customizer/class/class-shopisle-contact-page-instructions.php' );
 
 	/*  Contact page  */
-
 	$wp_customize->add_section( 'shop_isle_contact_page_section', array(
 		'title'    => __( 'Contact page', 'shop-isle' ),
 		'priority' => 99,
@@ -38,7 +26,14 @@ function shop_isle_contact_page_customize_register( $wp_customize ) {
 
 	$wp_customize->add_control( 'shop_isle_contact_page_form_shortcode', array(
 		'label'           => __( 'Contact form shortcode', 'shop-isle' ),
-		'description'     => sprintf( __( 'Create a form, copy the shortcode generated and paste it here. We recommend %1$s but you can use any plugin you like.', 'shop-isle' ), sprintf( '<a href="https://wordpress.org/plugins/pirate-forms/" target="_blank">%s</a>', 'Simple Contact Form Plugin - PirateForms' ) ),
+		'description'     => sprintf(
+			/* translators: 1: Link to Pirate Forms Plugin. */
+			__( 'Create a form, copy the shortcode generated and paste it here. We recommend %1$s but you can use any plugin you like.', 'shop-isle' ),
+			sprintf(
+				/* translators: 1: 'Simple Contact Form Plugin - PirateForms' */
+				'<a href="https://wordpress.org/plugins/pirate-forms/" target="_blank">%s</a>',
+			'Simple Contact Form Plugin - PirateForms' )
+		),
 		'section'         => 'shop_isle_contact_page_section',
 		'active_callback' => 'shop_isle_is_contact_page',
 		'priority'        => 1,

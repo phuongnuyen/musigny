@@ -58,4 +58,5 @@ if ( ( isset( $shop_isle_big_title_hide ) && $shop_isle_big_title_hide != 1 ) ||
 
 	echo '</section >';
 
-} /* END SLIDER */
+} // End if().
+

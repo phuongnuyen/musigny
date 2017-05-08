@@ -22,7 +22,9 @@ add_filter( 'shop-isle-subheader', 'shop_isle_big_title_to_slider', 100 );
 function shop_isle_messages_lite_customize_register( $wp_customize ) {
 	/* Edit theme info section links */
 	$upsell_section = $wp_customize->get_section( 'shopisle-upsell' );
-	$upsell_section->label_url = esc_url( 'http://docs.themeisle.com/article/184-shopisle-documentation' );
+	if ( ! empty( $upsell_section ) ) {
+		$upsell_section->label_url = esc_url( 'http://docs.themeisle.com/article/184-shopisle-documentation' );
+	}
 }
 add_action( 'customize_register', 'shop_isle_messages_lite_customize_register' );
 

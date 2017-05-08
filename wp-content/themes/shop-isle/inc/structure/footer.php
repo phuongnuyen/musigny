@@ -60,7 +60,7 @@ if ( ! function_exists( 'shop_isle_footer_widgets' ) ) {
 
 		<?php
 	}
-}
+}// End if().
 
 if ( ! function_exists( 'shop_isle_footer_copyright_and_socials' ) ) {
 	/**
@@ -144,7 +144,7 @@ if ( ! function_exists( 'shop_isle_footer_copyright_and_socials' ) ) {
 		<!-- Footer end -->
 		<?php
 	}
-}
+}// End if().
 
 
 if ( ! function_exists( 'shop_isle_footer_wrap_open' ) ) {

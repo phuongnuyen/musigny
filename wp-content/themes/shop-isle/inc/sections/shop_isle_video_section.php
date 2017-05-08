@@ -25,7 +25,7 @@ elseif ( ! empty( $shop_isle_yt_link ) && is_customize_preview() ) :
 	echo '<section class="module module-video bg-dark-30 shop_isle_hidden_if_not_customizer">';
 endif;
 
-if ( ( isset( $shop_isle_video_hide ) && $shop_isle_video_hide != 1 && ! empty( $shop_isle_yt_link ) ) || ( ! empty( $shop_isle_yt_link ) && is_customize_preview() )  ) :
+if ( ( isset( $shop_isle_video_hide ) && $shop_isle_video_hide != 1 && ! empty( $shop_isle_yt_link ) ) || ( ! empty( $shop_isle_yt_link ) && is_customize_preview() ) ) :
 
 	echo '<div class="module-video-thumbnail"' . ( ! empty( $shop_isle_yt_thumbnail ) ? ' style="background-image: url(' . $shop_isle_yt_thumbnail . ')' : '' ) . '"></div>';
 

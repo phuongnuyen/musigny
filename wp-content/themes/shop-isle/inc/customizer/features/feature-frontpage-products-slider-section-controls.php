@@ -13,7 +13,16 @@ function shop_isle_products_slider_controls_customize_register( $wp_customize ) 
 
 	$shop_isle_require_woo = '';
 	if ( ! class_exists( 'WooCommerce' ) ) {
-		$shop_isle_require_woo = '<div class="shop-isle-require-woo"><p>' . sprintf( __( 'To use this section, you are required to first install the  %1$s plugin', 'shop-isle' ), sprintf( '<a href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=woocommerce' ), 'install-plugin_woocommerce' ) ) . '">%s</a>', esc_html__( 'WooCommerce', 'shop-isle' ) ) ) . '</p></div>';
+		$shop_isle_require_woo = '<div class="shop-isle-require-woo"><p>' . sprintf(
+			/* translators: 1: Link to WooCommerce Plugin */
+				__( 'To use this section, you are required to first install the  %1$s plugin', 'shop-isle' ),
+			sprintf(
+				/* translators: 1: Link to WiooCommerce Plugin. 2: 'WooCommerce' */
+				'<a href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=woocommerce' ),
+				'install-plugin_woocommerce' ) ) . '">%s</a>',
+				esc_html__( 'WooCommerce', 'shop-isle' )
+			)
+		) . '</p></div>';
 	}
 
 	/*  Products slider section */
@@ -26,17 +35,17 @@ function shop_isle_products_slider_controls_customize_register( $wp_customize ) 
 
 	/* Hide products slider on frontpage */
 	$wp_customize->add_setting( 'shop_isle_products_slider_hide', array(
-		'default' => false,
+		'default'           => false,
 		'sanitize_callback' => 'shop_isle_sanitize_checkbox',
 	) );
 
 	$wp_customize->add_control(
 		'shop_isle_products_slider_hide',
 		array(
-			'type'        => 'checkbox',
-			'label'       => __( 'Hide products slider section on frontpage?', 'shop-isle' ),
-			'section'     => 'shop_isle_products_slider_section',
-			'priority'    => 1,
+			'type'     => 'checkbox',
+			'label'    => __( 'Hide products slider section on frontpage?', 'shop-isle' ),
+			'section'  => 'shop_isle_products_slider_section',
+			'priority' => 1,
 		)
 	);
 
@@ -49,10 +58,10 @@ function shop_isle_products_slider_controls_customize_register( $wp_customize ) 
 	$wp_customize->add_control(
 		'shop_isle_products_slider_single_hide',
 		array(
-			'type'        => 'checkbox',
-			'label'       => __( 'Hide products slider section on single product page?', 'shop-isle' ),
-			'section'     => 'shop_isle_products_slider_section',
-			'priority'    => 2,
+			'type'     => 'checkbox',
+			'label'    => __( 'Hide products slider section on single product page?', 'shop-isle' ),
+			'section'  => 'shop_isle_products_slider_section',
+			'priority' => 2,
 		)
 	);
 
@@ -83,7 +92,9 @@ function shop_isle_products_slider_controls_customize_register( $wp_customize ) 
 	) );
 
 	/* Category */
-	$shop_isle_prod_categories_array = array( '-' => __( 'Select category', 'shop-isle' ) );
+	$shop_isle_prod_categories_array = array(
+		'-' => __( 'Select category', 'shop-isle' ),
+	);
 
 	$shop_isle_prod_categories = get_categories( array(
 		'taxonomy'   => 'product_cat',
@@ -102,17 +113,16 @@ function shop_isle_products_slider_controls_customize_register( $wp_customize ) 
 	endif;
 
 	$wp_customize->add_setting( 'shop_isle_products_slider_category', array(
-		'transport'         => 'postMessage',
 		'sanitize_callback' => 'shop_isle_sanitize_text',
 	) );
 	$wp_customize->add_control(
 		'shop_isle_products_slider_category',
 		array(
-			'type' 		   => 'select',
-			'label' 	   => __( 'Products category', 'shop-isle' ),
-			'section' 	   => 'shop_isle_products_slider_section',
-			'choices'      => $shop_isle_prod_categories_array,
-			'priority' 	   => 5,
+			'type'        => 'select',
+			'label'       => __( 'Products category', 'shop-isle' ),
+			'section'     => 'shop_isle_products_slider_section',
+			'choices'     => $shop_isle_prod_categories_array,
+			'priority'    => 5,
 			'description' => __( 'If no category is selected , WooCommerce products from the first category found are displaying.', 'shop-isle' ),
 		)
 	);

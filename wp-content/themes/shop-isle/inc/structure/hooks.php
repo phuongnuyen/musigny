@@ -126,17 +126,17 @@ function shop_isle_woocommerce_image_dimensions() {
 		$catalog = array(
 		'width' 	=> '262',	// px
 		'height'	=> '325',	// px
-		'crop'		=> 1,// true
+		'crop'		=> 1,
 	);
 	$single = array(
 		'width' 	=> '555',	// px
 		'height'	=> '688',	// px
-		'crop'		=> 1,// true
+		'crop'		=> 1,
 	);
 	$thumbnail = array(
 		'width' 	=> '83',	// px
 		'height'	=> '103',	// px
-		'crop'		=> 1,// false
+		'crop'		=> 1,
 	);
 	// Image sizes
 	update_option( 'shop_catalog_image_size', $catalog ); 		// Product category thumbs

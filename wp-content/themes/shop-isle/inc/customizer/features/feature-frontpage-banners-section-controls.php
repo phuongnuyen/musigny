@@ -54,8 +54,14 @@ function shop_isle_banners_controls_customize_register( $wp_customize ) {
 				'image_url' => get_template_directory_uri() . '/assets/images/banner1.jpg',
 				'link'      => '#',
 			),
-			array( 'image_url' => get_template_directory_uri() . '/assets/images/banner2.jpg', 'link' => '#' ),
-			array( 'image_url' => get_template_directory_uri() . '/assets/images/banner3.jpg', 'link' => '#' ),
+			array(
+				'image_url' => get_template_directory_uri() . '/assets/images/banner2.jpg',
+				'link' => '#',
+			),
+			array(
+				'image_url' => get_template_directory_uri() . '/assets/images/banner3.jpg',
+				'link' => '#',
+			),
 		) ),
 	) );
 	$wp_customize->add_control( new Shop_Isle_Repeater_Controler( $wp_customize, 'shop_isle_banners', array(

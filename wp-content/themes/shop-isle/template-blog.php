@@ -64,7 +64,11 @@
 
 	if ( ! empty( $shop_isle_posts_per_page ) && ($shop_isle_posts_per_page > 0) ) :
 
-		$shop_isle_query = new WP_Query( array( 'post_type' => 'post', 'posts_per_page' => $shop_isle_posts_per_page, 'paged' => ( get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1 ) ) );
+		$shop_isle_query = new WP_Query( array(
+			'post_type' => 'post',
+			'posts_per_page' => $shop_isle_posts_per_page,
+			'paged' => ( get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1 ),
+		) );
 
 
 
@@ -124,7 +128,7 @@
 									</div>
 									<?php
 
-							}
+							}// End while().
 
 							?>
 
@@ -154,7 +158,7 @@
 				<?php
 				/* Restore original Post Data */
 				wp_reset_postdata();
-		}
+		}// End if().
 
 		endif;
 

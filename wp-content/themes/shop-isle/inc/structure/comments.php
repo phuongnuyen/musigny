@@ -39,8 +39,9 @@ if ( ! function_exists( 'shop_isle_comment' ) ) {
 		<div class="comment-body">
 			<div class="comment-meta commentmetadata">
 				<div class="comment-author vcard">
-					<?php echo get_avatar( $comment, 128 ); ?>
-					<?php printf( __( '<cite class="fn">%s</cite>', 'shop-isle' ), get_comment_author_link() ); ?>
+					<?php echo get_avatar( $comment, 128 );
+					/* translators: s: Comment author link */
+					printf( __( '<cite class="fn">%s</cite>', 'shop-isle' ), get_comment_author_link() ); ?>
 				</div>
 				<?php if ( '0' == $comment->comment_approved ) : ?>
 					<em class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'shop-isle' ); ?></em>
@@ -59,7 +60,11 @@ if ( ! function_exists( 'shop_isle_comment' ) ) {
 				</a>
 				<div class="reply">
 					 &nbsp; - &nbsp;
-					<?php comment_reply_link( array_merge( $args, array( 'add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
+					<?php comment_reply_link( array_merge( $args, array(
+						'add_below' => $add_below,
+						'depth' => $depth,
+						'max_depth' => $args['max_depth'],
+					) ) ); ?>
 					<?php edit_comment_link( __( 'Edit', 'shop-isle' ), '  ', '' ); ?>
 				</div>
 			</div>
@@ -70,4 +75,4 @@ if ( ! function_exists( 'shop_isle_comment' ) ) {
 		<?php endif; ?>
 	<?php
 	}
-}
+}// End if().

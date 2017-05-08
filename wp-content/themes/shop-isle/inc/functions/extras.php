@@ -68,7 +68,7 @@ function shop_isle_html_tag_schema() {
 	// Is single post
 	if ( is_singular( 'post' ) ) {
 		$type 	= 'Article';
-	} // Is author page
+	} // End if().
 	elseif ( is_author() ) {
 		$type 	= 'ProfilePage';
 	} // Is search results page
@@ -77,4 +77,35 @@ function shop_isle_html_tag_schema() {
 	}
 
 	echo 'itemscope="itemscope" itemtype="' . esc_attr( $schema ) . esc_attr( $type ) . '"';
+}
+
+
+/**
+ * Add meta box for page header description - save meta box
+ *
+ * @since  1.0.0
+ */
+function shop_isle_custom_add_save( $post_id ) {
+	$parent_id = wp_is_post_revision( $post_id );
+	if ( $parent_id ) {
+		$post_id = $parent_id;
+	}
+	if ( isset( $_POST['shop_isle_page_description'] ) ) {
+		shop_isle_update_custom_meta( $post_id, $_POST['shop_isle_page_description'], 'shop_isle_page_description' );
+	}
+}
+
+/**
+ * Add meta box for page header description - update meta box
+ *
+ * @since  1.0.0
+ */
+function shop_isle_update_custom_meta( $post_id, $newvalue, $field_name ) {
+	// To create new meta
+	if ( ! get_post_meta( $post_id, $field_name ) ) {
+		add_post_meta( $post_id, $field_name, $newvalue );
+	} else {
+		// or to update existing meta
+		update_post_meta( $post_id, $field_name, $newvalue );
+	}
 }

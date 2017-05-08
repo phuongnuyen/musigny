@@ -18,7 +18,7 @@ if ( ! function_exists( 'shop_isle_before_content' ) ) {
 	function shop_isle_before_content() {
 		?>
 		<div class="main">
-	    	<?php
+			<?php
 	}
 }
 
@@ -141,6 +141,7 @@ function shop_isle_loop_columns() {
  * Add 'woocommerce-active' class to the body tag
  *
  * @param  array $classes body classes.
+ *
  * @return array $classes modified to include 'woocommerce-active' class.
  */
 function shop_isle_woocommerce_body_class( $classes ) {
@@ -157,6 +158,7 @@ if ( ! function_exists( 'shop_isle_cart_link_fragment' ) ) {
 	 * Ensure cart contents update when products are added to the cart via AJAX
 	 *
 	 * @param  array $fragments Fragments to refresh via AJAX.
+	 *
 	 * @return array            Fragments to refresh via AJAX.
 	 */
 	function shop_isle_cart_link_fragment( $fragments ) {
@@ -186,6 +188,7 @@ function shop_isle_woocommerce_scripts() {
  * Related Products Args
  *
  * @param  array $args related products args.
+ *
  * @since 1.0.0
  * @return  array $args related products args.
  */
@@ -285,46 +288,25 @@ function shop_isle_header_shop_page( $page_title ) {
  */
 function shop_isle_cart_item_thumbnail( $thumb, $cart_item, $cart_item_key ) {
 
-	$product = get_product( $cart_item['product_id'] );
+	if ( function_exists( 'wc_get_product' ) ) {
+		$product = wc_get_product( $cart_item['product_id'] );
+	} elseif ( function_exists( 'get_product' ) ) {
+		$product = get_product( $cart_item['product_id'] );
+	}
 
 	if ( ! empty( $cart_item['variation'] ) ) {
 		if ( ! empty( $cart_item['variation_id'] ) ) {
-			$product = get_product( $cart_item['variation_id'] );
+
+			if ( function_exists( 'wc_get_product' ) ) {
+				$product = wc_get_product( $cart_item['variation_id'] );
+			} elseif ( function_exists( 'get_product' ) ) {
+				$product = get_product( $cart_item['variation_id'] );
+			}
 		}
 	}
 
 	return $product->get_image( 'shop_isle_cart_item_image_size' );
 
-}
-
-/**
- * Add meta box for page header description - save meta box
- *
- * @since  1.0.0
- */
-function shop_isle_custom_add_save( $post_id ) {
-
-	if ( $parent_id = wp_is_post_revision( $post_id ) ) {
-		$post_id = $parent_id;
-	}
-	if ( isset( $_POST['shop_isle_page_description'] ) ) {
-		shop_isle_update_custom_meta( $post_id, $_POST['shop_isle_page_description'], 'shop_isle_page_description' );
-	}
-}
-
-/**
- * Add meta box for page header description - update meta box
- *
- * @since  1.0.0
- */
-function shop_isle_update_custom_meta( $post_id, $newvalue, $field_name ) {
-	// To create new meta
-	if ( ! get_post_meta( $post_id, $field_name ) ) {
-		add_post_meta( $post_id, $field_name, $newvalue );
-	} else {
-		// or to update existing meta
-		update_post_meta( $post_id, $field_name, $newvalue );
-	}
 }
 
 /**
@@ -366,26 +348,50 @@ function shop_isle_products_slider_on_single_page() {
 
 				$shop_isle_products_slider_category = get_theme_mod( 'shop_isle_products_slider_category' );
 
-		if ( ! empty( $shop_isle_products_slider_category ) && ($shop_isle_products_slider_category != '-') ) :
-
-			$shop_isle_products_slider_args = array(
-			'post_type' => 'product',
-			'posts_per_page' => 10,
-			'tax_query' => array(
-			array(
-			'taxonomy' => 'product_cat',
-			'field'    => 'term_id',
-			'terms'    => $shop_isle_products_slider_category,
-			),
-			),
-			'meta_query' => array(
-			array(
-				'key' => '_visibility',
-				'value' => 'hidden',
-				'compare' => '!=',
-			),
-			),
+		$tax_query_item = array();
+		$meta_query_item = array();
+		if ( taxonomy_exists( 'product_visibility' ) ) {
+			$tax_query_item = array(
+				array(
+					'taxonomy' => 'product_visibility',
+					'field'    => 'term_id',
+					'terms'    => 'exclude-from-catalog',
+					'operator' => 'NOT IN',
+				),
 			);
+		} else {
+			$meta_query_item = array(
+				'key'     => '_visibility',
+				'value'   => 'hidden',
+				'compare' => '!=',
+			);
+		}
+
+		$shop_isle_products_slider_args = array(
+				'post_type' => 'product',
+				'posts_per_page' => 10,
+		);
+
+		if ( ! empty( $shop_isle_products_slider_category ) && ($shop_isle_products_slider_category != '-') ) {
+			$shop_isle_products_slider_args['tax_query'] = array(
+				array(
+					'taxonomy'   => 'product_cat',
+					'field'      => 'term_id',
+					'terms'      => $shop_isle_products_slider_category,
+				),
+			);
+		}
+
+		if ( ! empty( $tax_query_item ) ) {
+			$shop_isle_products_slider_args['tax_query']['relation'] = 'AND';
+			$shop_isle_products_slider_args['tax_query'] = array_merge( $shop_isle_products_slider_args['tax_query'],$tax_query_item );
+		}
+
+		if ( ! empty( $meta_query_item ) ) {
+			$shop_isle_products_slider_args['meta_query'] = $meta_query_item;
+		}
+
+		if ( ! empty( $shop_isle_products_slider_category ) && ($shop_isle_products_slider_category != '-') ) :
 
 			$shop_isle_products_slider_loop = new WP_Query( $shop_isle_products_slider_args );
 
@@ -407,7 +413,12 @@ function shop_isle_products_slider_on_single_page() {
 					$product = new WC_Product( get_the_ID() );
 
 					$rating_html = '';
-					if ( function_exists( 'method_exists' ) && method_exists( $product, 'get_rating_html' ) && method_exists( $product, 'get_average_rating' ) ) {
+					if ( function_exists( 'method_exists' ) && function_exists( 'wc_get_rating_html' ) && method_exists( $product, 'get_average_rating' ) ) {
+						$shop_isle_avg = $product->get_average_rating();
+						if ( ! empty( $shop_isle_avg ) ) {
+							$rating_html = wc_get_rating_html( $shop_isle_avg );
+						}
+					} elseif ( function_exists( 'method_exists' ) && method_exists( $product, 'get_rating_html' ) && method_exists( $product, 'get_average_rating' ) ) {
 						$shop_isle_avg = $product->get_average_rating();
 						if ( ! empty( $shop_isle_avg ) ) {
 							$rating_html = $product->get_rating_html( $shop_isle_avg );
@@ -416,29 +427,13 @@ function shop_isle_products_slider_on_single_page() {
 					if ( ! empty( $rating_html ) && get_option( 'woocommerce_enable_review_rating' ) === 'yes' ) {
 						echo '<div class="product-rating-home">' . $rating_html . '</div>';
 					}
-					if ( ! empty( $product ) ) :
-						if ( function_exists( 'get_woocommerce_price_format' ) ) :
-							$format_string = get_woocommerce_price_format();
-				endif;
-						if ( ! empty( $format_string ) ) :
-							switch ( $format_string ) {
-								case '%1$s%2$s' :
-									echo get_woocommerce_currency_symbol() . $product->price;
-								break;
-								case '%2$s%1$s' :
-									echo $product->price . get_woocommerce_currency_symbol();
-								break;
-								case '%1$s&nbsp;%2$s' :
-									echo get_woocommerce_currency_symbol() . ' ' . $product->price;
-								break;
-								case '%2$s&nbsp;%1$s' :
-									echo $product->price . ' ' . get_woocommerce_currency_symbol();
-								break;
-							} else :
-								echo get_woocommerce_currency_symbol() . $product->price;
-				endif;
-					endif;
-
+					$shop_isle_price = '';
+					if ( function_exists( 'method_exists' ) && method_exists( $product, 'get_price_html' ) ) {
+						$shop_isle_price = $product->get_price_html();
+					}
+					if ( ! empty( $shop_isle_price ) ) {
+						echo wp_kses_post( $shop_isle_price );
+					}
 					echo '</div>';
 					echo '</div>';
 					echo '</div>';
@@ -453,18 +448,6 @@ function shop_isle_products_slider_on_single_page() {
 			endif;
 
 				else :
-
-					$shop_isle_products_slider_args = array(
-					'post_type' => 'product',
-					'posts_per_page' => 10,
-						'meta_query' => array(
-							array(
-								'key' => '_visibility',
-								'value' => 'hidden',
-								'compare' => '!=',
-							),
-					),
-						);
 
 					$shop_isle_products_slider_loop = new WP_Query( $shop_isle_products_slider_args );
 
@@ -485,7 +468,12 @@ function shop_isle_products_slider_on_single_page() {
 							echo '<h4 class="shop-item-title font-alt"><a href="' . esc_url( get_permalink() ) . '">' . get_the_title() . '</a></h4>';
 								$product = new WC_Product( get_the_ID() );
 								$rating_html = '';
-							if ( function_exists( 'method_exists' ) && method_exists( $product, 'get_rating_html' ) && method_exists( $product, 'get_average_rating' ) ) {
+							if ( function_exists( 'method_exists' ) && function_exists( 'wc_get_rating_html' ) && method_exists( $product, 'get_average_rating' ) ) {
+								$shop_isle_avg = $product->get_average_rating();
+								if ( ! empty( $shop_isle_avg ) ) {
+									$rating_html = wc_get_rating_html( $shop_isle_avg );
+								}
+							} elseif ( function_exists( 'method_exists' ) && method_exists( $product, 'get_rating_html' ) && method_exists( $product, 'get_average_rating' ) ) {
 								$shop_isle_avg = $product->get_average_rating();
 								if ( ! empty( $shop_isle_avg ) ) {
 									$rating_html = $product->get_rating_html( $shop_isle_avg );
@@ -494,29 +482,13 @@ function shop_isle_products_slider_on_single_page() {
 							if ( ! empty( $rating_html ) && get_option( 'woocommerce_enable_review_rating' ) === 'yes' ) {
 								echo '<div class="product-rating-home">' . $rating_html . '</div>';
 							}
-							if ( ! empty( $product ) ) :
-								if ( function_exists( 'get_woocommerce_price_format' ) ) :
-									$format_string = get_woocommerce_price_format();
-								endif;
-								if ( ! empty( $format_string ) ) :
-									switch ( $format_string ) {
-										case '%1$s%2$s' :
-											echo get_woocommerce_currency_symbol() . $product->price;
-											break;
-										case '%2$s%1$s' :
-											echo $product->price . get_woocommerce_currency_symbol();
-											break;
-										case '%1$s&nbsp;%2$s' :
-											echo get_woocommerce_currency_symbol() . ' ' . $product->price;
-											break;
-										case '%2$s&nbsp;%1$s' :
-											echo $product->price . ' ' . get_woocommerce_currency_symbol();
-											break;
-									} else :
-										echo get_woocommerce_currency_symbol() . $product->price;
-								endif;
-								endif;
-
+							$shop_isle_price = '';
+							if ( function_exists( 'method_exists' ) && method_exists( $product, 'get_price_html' ) ) {
+								$shop_isle_price = $product->get_price_html();
+							}
+							if ( ! empty( $shop_isle_price ) ) {
+								echo wp_kses_post( $shop_isle_price );
+							}
 							echo '</div>';
 								echo '</div>';
 								echo '</div>';
@@ -587,13 +559,18 @@ if ( ! function_exists( 'shop_isle_loop_product_thumbnail' ) ) {
 		global $product;
 		$image_size = 'shop_catalog';
 
-		$shop_isle_gallery_attachment_ids = $product->get_gallery_attachment_ids();
+		if ( function_exists( 'method_exists' ) && method_exists( $product, 'get_gallery_image_ids' ) ) {
+			$shop_isle_gallery_attachment_ids = $product->get_gallery_image_ids();
+		} elseif ( function_exists( 'method_exists' ) && method_exists( $product, 'get_gallery_attachment_ids' ) ) {
+			$shop_isle_gallery_attachment_ids = $product->get_gallery_attachment_ids();
+		}
 
 		if ( has_post_thumbnail() ) {
 			if ( function_exists( 'wc_get_product_attachment_props' ) ) {
 
 				$props = wc_get_product_attachment_props( get_post_thumbnail_id(), $product );
-				echo get_the_post_thumbnail( $product->ID, $image_size, array(
+				$product_id = get_the_ID();
+				echo get_the_post_thumbnail( $product_id, $image_size, array(
 					'title'	 => $props['title'],
 					'alt'    => $props['alt'],
 				));
@@ -622,7 +599,7 @@ if ( ! function_exists( 'shop_isle_loop_product_thumbnail' ) ) {
 			}
 		}
 	}
-}
+}// End if().
 
 
 if ( ! function_exists( 'shop_isle_woocommerce_taxonomy_archive_description' ) ) {
@@ -630,12 +607,12 @@ if ( ! function_exists( 'shop_isle_woocommerce_taxonomy_archive_description' ) )
 	 * Display WooCommerce product category description on all category archive pages
 	 */
 	function shop_isle_woocommerce_taxonomy_archive_description() {
-	    if ( is_tax( array( 'product_cat', 'product_tag' ) ) && get_query_var( 'paged' ) != 0 ) {
-	        $description = wc_format_content( term_description() );
-	        if ( $description ) {
-	            echo '<div class="term-description">' . $description . '</div>';
-	        }
-	    }
+		if ( is_tax( array( 'product_cat', 'product_tag' ) ) && get_query_var( 'paged' ) != 0 ) {
+			$description = wc_format_content( term_description() );
+			if ( $description ) {
+				echo '<div class="term-description">' . $description . '</div>';
+			}
+		}
 	}
 }
 add_action( 'woocommerce_archive_description', 'shop_isle_woocommerce_taxonomy_archive_description' );
@@ -667,6 +644,18 @@ function shop_isle_woocommerce_breadcrumb() {
 			echo '<nav class="woocommerce-breadcrumb"><a href="' . esc_url( home_url( '/' ) ) . '">Home</a></nav>';
 		} else {
 			woocommerce_breadcrumb();
+		}
+	}
+}
+
+/**
+ * Function to add Out of Stock badge on shop pages
+ */
+function shop_isle_outofstock_notify_on_archives() {
+	global $product;
+	if ( function_exists( 'method_exists' ) && method_exists( $product, 'managing_stock' ) && method_exists( $product, 'is_in_stock' ) ) {
+		if ( ! $product->managing_stock() && ! $product->is_in_stock() ) {
+			echo '<span class="onsale out-of-stock">' . esc_html__( 'Out of Stock','shop-isle' ) . '</span>';
 		}
 	}
 }

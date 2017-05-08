@@ -15,12 +15,19 @@ function shop_isle_products_controls_customize_register( $wp_customize ) {
 
 	$shop_isle_require_woo = '';
 	if ( ! class_exists( 'WooCommerce' ) ) {
-		$shop_isle_require_woo = '<div class="shop-isle-require-woo"><p>' . sprintf( __( 'To use this section, you are required to first install the  %1$s plugin', 'shop-isle' ), sprintf( '<a href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=woocommerce' ), 'install-plugin_woocommerce' ) ) . '">%s</a>', esc_html__( 'WooCommerce', 'shop-isle' ) ) ) . '</p></div>';
-
+		$shop_isle_require_woo = '<div class="shop-isle-require-woo"><p>' . sprintf(
+			/* translators: 1: Link to WooCommerce Plugin */
+				__( 'To use this section, you are required to first install the  %1$s plugin', 'shop-isle' ),
+			sprintf(
+				/* translators: 1: Link to WiooCommerce Plugin. 2: 'WooCommerce' */
+				'<a href="' . esc_url( wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=woocommerce' ),
+				'install-plugin_woocommerce' ) ) . '">%s</a>', esc_html__( 'WooCommerce', 'shop-isle' )
+			)
+		) . '</p></div>';
 	}
 
 	$wp_customize->add_section( 'shop_isle_products_section', array(
-		'default'   => false,
+		'default'     => false,
 		'title'       => __( 'Products section', 'shop-isle' ),
 		'description' => $shop_isle_require_woo,
 		'priority'    => apply_filters( 'shop_isle_section_priority', 20, 'shop_isle_products_section' ),
@@ -32,10 +39,10 @@ function shop_isle_products_controls_customize_register( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'shop_isle_products_hide', array(
-		'type'        => 'checkbox',
-		'label'       => __( 'Hide products section?', 'shop-isle' ),
-		'section'     => 'shop_isle_products_section',
-		'priority'    => 1,
+		'type'     => 'checkbox',
+		'label'    => __( 'Hide products section?', 'shop-isle' ),
+		'section'  => 'shop_isle_products_section',
+		'priority' => 1,
 	) );
 
 	/* Title */
@@ -64,7 +71,9 @@ function shop_isle_products_controls_customize_register( $wp_customize ) {
 	) );
 
 	/* Category */
-	$shop_isle_prod_categories_array = array( '-' => __( 'Select category', 'shop-isle' ) );
+	$shop_isle_prod_categories_array = array(
+		'-' => __( 'Select category', 'shop-isle' ),
+	);
 
 	$shop_isle_prod_categories = get_categories( array(
 		'taxonomy'   => 'product_cat',

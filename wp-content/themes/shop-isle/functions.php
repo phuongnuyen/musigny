@@ -17,6 +17,7 @@ require get_template_directory() . '/inc/init.php';
  */
 
 
+
 function shop_isle_themeisle_sdk(){
 	require dirname(__FILE__).'/vendor/themeisle/load.php';
 	themeisle_sdk_register (

@@ -18,8 +18,8 @@ if ( ! function_exists( 'shop_isle_post_header' ) ) {
 			<h2 class="post-title">
 				<a href="<?php echo esc_url( get_permalink() ); ?>" rel="bookmark"><?php the_title(); ?></a>
 			</h2>
-		</div>	
-		
+		</div>
+
 		<?php
 	}
 }
@@ -36,6 +36,7 @@ if ( ! function_exists( 'shop_isle_post_content' ) ) {
 		<?php
 		the_content(
 			sprintf(
+				/* translators: s: post title */
 				__( 'Continue reading %s', 'shop-isle' ),
 				'<span class="screen-reader-text">' . get_the_title() . '</span>'
 			)
@@ -47,17 +48,21 @@ if ( ! function_exists( 'shop_isle_post_content' ) ) {
 		) );
 		?>
 		</div><!-- .entry-content -->
-		
+
 		<?php
 			$tags_list = get_the_tag_list( '', esc_html__( ', ', 'shop-isle' ) );
 		if ( $tags_list ) {
-			printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'shop-isle' ) . '</span>', $tags_list ); // WPCS: XSS OK.
+			printf(
+				/* translators: s: post title */
+				'<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'shop-isle' ) . '</span>',
+				$tags_list
+			);
 		}
 		?>
-		
+
 		<?php
 	}
-}
+} // End if().
 
 if ( ! function_exists( 'shop_isle_post_meta' ) ) {
 	/**
@@ -93,18 +98,6 @@ if ( ! function_exists( 'shop_isle_paging_nav' ) ) {
 			</div><!-- .nav-links -->
 		</nav><!-- .navigation -->
 		<?php
-
-		/*
-		Global $wp_query;
-
-		$args = array(
-			'type' 		=> 'list',
-			'next_text' => __( 'Next', 'shop-isle' ) . '&nbsp;<span class="meta-nav">&rarr;</span>',
-			'prev_text'	=> '<span class="meta-nav">&larr;</span>&nbsp' . __( 'Previous', 'shop-isle' ),
-			);
-
-		the_posts_pagination( $args );
-		*/
 	}
 }
 
@@ -163,10 +156,13 @@ if ( ! function_exists( 'shop_isle_posted_on' ) ) {
 		$shop_isleoutput = '';
 		if ( $shop_isle_categories ) {
 			foreach ( $shop_isle_categories as $shop_isle_category ) {
-				$shop_isleoutput .= '<a href="' . esc_url( get_category_link( $shop_isle_category->term_id ) ) . '" title="' . esc_attr( sprintf( __( 'View all posts in %s', 'shop-isle' ), $shop_isle_category->name ) ) . '">' . esc_html( $shop_isle_category->cat_name ) . '</a>' . $separator;
+				$shop_isleoutput .= '<a href="' . esc_url( get_category_link( $shop_isle_category->term_id ) ) . '" title="' . esc_attr( sprintf(
+					/* translators: s: category name */
+					__( 'View all posts in %s', 'shop-isle' ), $shop_isle_category->name
+				) ) . '">' . esc_html( $shop_isle_category->cat_name ) . '</a>' . $separator;
 			}
 			echo trim( $shop_isleoutput, $separator );
 		}
 
 	}
-}
+}// End if().

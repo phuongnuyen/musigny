@@ -133,10 +133,10 @@ if ( ( ! empty( $shop_isle_services_title ) || ! empty( $shop_isle_services_subt
 							}
 
 							echo '</div></div>';
-						}
-					}
+						}// End if().
+					}// End foreach().
 					echo '</div>';
-				}
+				}// End if().
 				?>
 			</div>
 		</div>
@@ -157,5 +157,5 @@ if ( ( ! empty( $shop_isle_services_title ) || ! empty( $shop_isle_services_subt
 		</section>
 		<?php
 	}
-}
+}// End if().
 ?>

@@ -50,4 +50,5 @@ if ( ( ! empty( $shop_isle_ribbon_background ) ) || ( ! empty( $shop_isle_ribbon
 			</div><!-- container -->
 		</div><!-- section-overlay-layer -->
 	</section><!-- ribbon -->
-<?php } ?>
+<?php }// End if().
+	?>

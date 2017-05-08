@@ -97,16 +97,16 @@ if ( ! empty( $shop_isle_homepage_slider_shortcode ) ) {
 					echo '</div>';
 					echo '</li>';
 
-				}
-			}
+				}// End if().
+			}// End foreach().
 
 			echo '</ul>';
 
 			echo '</div>';
 
-		}
-	}
-}
+		}// End if().
+	}// End if().
+}// End if().
 
 echo '</section >';
 

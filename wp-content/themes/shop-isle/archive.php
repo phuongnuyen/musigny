@@ -99,7 +99,7 @@
 								</div>
 								<?php
 
-					}
+					}// End while().
 
 					?>
 
@@ -129,7 +129,7 @@
 			<?php
 			/* Restore original Post Data */
 			wp_reset_postdata();
-	}
+	}// End if().
 
 
 	?>

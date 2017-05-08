@@ -56,7 +56,9 @@ if ( ( ! empty( $shop_isle_fp_categories_title ) || ! empty( $shop_isle_fp_categ
 
 				$categ_name = '';
 				$categ_name  = get_cat_name( $shop_isle_fp_category );
-				$categ_image = wp_get_attachment_image( $thumbnail_id, 'shop_isle_category_thumbnail', array( 'alt' => $categ_name ) );
+				$categ_image = wp_get_attachment_image( $thumbnail_id, 'shop_isle_category_thumbnail', array(
+					'alt' => $categ_name,
+				) );
 
 
 				if ( ! empty( $categ_image ) ) {
@@ -86,17 +88,17 @@ if ( ( ! empty( $shop_isle_fp_categories_title ) || ! empty( $shop_isle_fp_categ
 					echo '</div><!-- .popular-category -->';
 
 				}
-			}
-		}
+			}// End if().
+		}// End foreach().
 		echo '</div><!-- .popular-categories-wrap -->';
 		echo '<div class="container">';
-	}
+	}// End if().
 
 				?>
 			</div><!-- .container -->
 		</div><!-- .section-overlay-layer -->
 	</section>
 	<?php
-}
+}// End if().
 
 ?>

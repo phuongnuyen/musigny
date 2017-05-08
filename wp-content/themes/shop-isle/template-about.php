@@ -125,97 +125,122 @@ get_header(); ?>
 
 						}
 
-							$shop_isle_team_members = get_theme_mod( 'shop_isle_team_members',json_encode( array( array( 'image_url' => get_template_directory_uri() . '/assets/images/team1.jpg', 'text' => 'Eva Bean', 'subtext' => 'Developer', 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a iaculis diam.' ), array( 'image_url' => get_template_directory_uri() . '/assets/images/team2.jpg', 'text' => 'Maria Woods', 'subtext' => 'Designer', 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a iaculis diam.' ), array( 'image_url' => get_template_directory_uri() . '/assets/images/team3.jpg', 'text' => 'Booby Stone', 'subtext' => 'Director', 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a iaculis diam.' ), array( 'image_url' => get_template_directory_uri() . '/assets/images/team4.jpg', 'text' => 'Anna Neaga', 'subtext' => 'Art Director', 'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a iaculis diam.' ) ) ) );
+							$shop_isle_team_members = get_theme_mod( 'shop_isle_team_members',json_encode( array(
+								array(
+									'image_url' => get_template_directory_uri() . '/assets/images/team1.jpg',
+									'text' => 'Eva Bean',
+									'subtext' => 'Developer',
+									'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a iaculis diam.',
+								),
+								array(
+									'image_url' => get_template_directory_uri() . '/assets/images/team2.jpg',
+									'text' => 'Maria Woods',
+									'subtext' => 'Designer',
+									'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a iaculis diam.',
+								),
+								array(
+									'image_url' => get_template_directory_uri() . '/assets/images/team3.jpg',
+									'text' => 'Booby Stone',
+									'subtext' => 'Director',
+									'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a iaculis diam.',
+								),
+								array(
+									'image_url' => get_template_directory_uri() . '/assets/images/team4.jpg',
+									'text' => 'Anna Neaga',
+									'subtext' => 'Art Director',
+									'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a iaculis diam.',
+								),
+							) ) );
 
-						if ( ! empty( $shop_isle_team_members ) ) {
+							if ( ! empty( $shop_isle_team_members ) ) {
 
-							$shop_isle_team_members_decoded = json_decode( $shop_isle_team_members );
+								$shop_isle_team_members_decoded = json_decode( $shop_isle_team_members );
 
-							if ( ! empty( $shop_isle_team_members_decoded ) ) {
+								if ( ! empty( $shop_isle_team_members_decoded ) ) {
 
-								echo '<div class="row">';
+									echo '<div class="row">';
 
 									echo '<div class="hero-slider about-team-member">';
 
 										echo '<ul class="slides">';
 
-								foreach ( $shop_isle_team_members_decoded as $shop_isle_team_member ) {
+									foreach ( $shop_isle_team_members_decoded as $shop_isle_team_member ) {
 
-									echo '<div class="col-sm-6 col-md-3 mb-sm-20 fadeInUp">';
+										echo '<div class="col-sm-6 col-md-3 mb-sm-20 fadeInUp">';
 
-									echo '<div class="team-item">';
+										echo '<div class="team-item">';
 
-									echo '<div class="team-image">';
+										echo '<div class="team-image">';
 
-									if ( ! empty( $shop_isle_team_member->image_url ) ) {
+										if ( ! empty( $shop_isle_team_member->image_url ) ) {
 
+											if ( ! empty( $shop_isle_team_member->text ) ) {
+
+												if ( function_exists( 'icl_t' ) && ! empty( $shop_isle_team_member->id ) ) {
+													$shop_isle_team_member_image_url = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member image', $shop_isle_team_member->image_url );
+													$shop_isle_team_member_text = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member name', $shop_isle_team_member->text );
+													echo '<img src="' . esc_url( $shop_isle_team_member_image_url ) . '" alt="' . esc_html( $shop_isle_team_member_text ) . '">';
+												} else {
+													echo '<img src="' . esc_url( $shop_isle_team_member->image_url ) . '" alt="' . esc_html( $shop_isle_team_member->text ) . '">';
+												}
+											} else {
+												if ( function_exists( 'icl_t' ) && ! empty( $shop_isle_team_member->id ) ) {
+													$shop_isle_team_member_image_url = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member image', $shop_isle_team_member->image_url );
+													echo '<img src="' . esc_url( $shop_isle_team_member_image_url ) . '" alt="">';
+												} else {
+													echo '<img src="' . esc_url( $shop_isle_team_member->image_url ) . '" alt="">';
+												}
+											}
+										}
+
+
+										if ( ! empty( $shop_isle_team_member->description ) ) {
+											echo '<div class="team-detail">';
+
+											if ( function_exists( 'icl_t' ) && ! empty( $shop_isle_team_member->id ) ) {
+												$shop_isle_team_member_description = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member description', $shop_isle_team_member->description );
+												echo '<p class="font-serif">' . wp_kses_post( $shop_isle_team_member_description ) . '</p>';
+											} else {
+												echo '<p class="font-serif">' . wp_kses_post( $shop_isle_team_member->description ) . '</p>';
+											}
+											echo '</div><!-- .team-detail -->';
+										}
+										echo '</div><!-- .team-image -->';
+
+										echo '<div class="team-descr font-alt">';
 										if ( ! empty( $shop_isle_team_member->text ) ) {
-
 											if ( function_exists( 'icl_t' ) && ! empty( $shop_isle_team_member->id ) ) {
-												$shop_isle_team_member_image_url = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member image', $shop_isle_team_member->image_url );
 												$shop_isle_team_member_text = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member name', $shop_isle_team_member->text );
-												echo '<img src="' . esc_url( $shop_isle_team_member_image_url ) . '" alt="' . esc_html( $shop_isle_team_member_text ) . '">';
+												echo '<div class="team-name">' . wp_kses_post( $shop_isle_team_member_text ) . '</div>';
 											} else {
-												echo '<img src="' . esc_url( $shop_isle_team_member->image_url ) . '" alt="' . esc_html( $shop_isle_team_member->text ) . '">';
+												echo '<div class="team-name">' . wp_kses_post( $shop_isle_team_member->text ) . '</div>';
 											}
-										} else {
+										}
+										if ( ! empty( $shop_isle_team_member->subtext ) ) {
 											if ( function_exists( 'icl_t' ) && ! empty( $shop_isle_team_member->id ) ) {
-												$shop_isle_team_member_image_url = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member image', $shop_isle_team_member->image_url );
-												echo '<img src="' . esc_url( $shop_isle_team_member_image_url ) . '" alt="">';
+												$shop_isle_team_member_subtext = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member job', $shop_isle_team_member->subtext );
+												echo '<div class="team-role">' . wp_kses_post( $shop_isle_team_member_subtext ) . '</div>';
 											} else {
-												echo '<img src="' . esc_url( $shop_isle_team_member->image_url ) . '" alt="">';
+												echo '<div class="team-role">' . wp_kses_post( $shop_isle_team_member->subtext ) . '</div>';
 											}
 										}
-									}
+										echo '</div><!-- .team-descr -->';
 
+										echo '</div><!-- .team-item -->';
 
-									if ( ! empty( $shop_isle_team_member->description ) ) {
-										echo '<div class="team-detail">';
+										echo '</div><!-- .col-sm-6 col-md-3 mb-sm-20 fadeInUp -->';
 
-										if ( function_exists( 'icl_t' ) && ! empty( $shop_isle_team_member->id ) ) {
-											$shop_isle_team_member_description = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member description', $shop_isle_team_member->description );
-											echo '<p class="font-serif">' . wp_kses_post( $shop_isle_team_member_description ) . '</p>';
-										} else {
-											echo '<p class="font-serif">' . wp_kses_post( $shop_isle_team_member->description ) . '</p>';
-										}
-										echo '</div><!-- .team-detail -->';
-									}
-									echo '</div><!-- .team-image -->';
-
-									echo '<div class="team-descr font-alt">';
-									if ( ! empty( $shop_isle_team_member->text ) ) {
-										if ( function_exists( 'icl_t' ) && ! empty( $shop_isle_team_member->id ) ) {
-											$shop_isle_team_member_text = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member name', $shop_isle_team_member->text );
-											echo '<div class="team-name">' . wp_kses_post( $shop_isle_team_member_text ) . '</div>';
-										} else {
-											echo '<div class="team-name">' . wp_kses_post( $shop_isle_team_member->text ) . '</div>';
-										}
-									}
-									if ( ! empty( $shop_isle_team_member->subtext ) ) {
-										if ( function_exists( 'icl_t' ) && ! empty( $shop_isle_team_member->id ) ) {
-											$shop_isle_team_member_subtext = icl_t( 'Team member ' . $shop_isle_team_member->id, 'Team member job', $shop_isle_team_member->subtext );
-											echo '<div class="team-role">' . wp_kses_post( $shop_isle_team_member_subtext ) . '</div>';
-										} else {
-											echo '<div class="team-role">' . wp_kses_post( $shop_isle_team_member->subtext ) . '</div>';
-										}
-									}
-									echo '</div><!-- .team-descr -->';
-
-									echo '</div><!-- .team-item -->';
-
-									echo '</div><!-- .col-sm-6 col-md-3 mb-sm-20 fadeInUp -->';
-
-								}
+									}// End foreach().
 
 										echo '</ul>';
 
 									echo '</div>';
 
-								echo '</div>';
+									echo '</div>';
 
 
-							}
-						}
+								}// End if().
+							}// End if().
 
 
 
@@ -294,7 +319,28 @@ get_header(); ?>
 					echo '</div>';
 				endif;
 
-				$shop_isle_advantages = get_theme_mod( 'shop_isle_advantages',json_encode( array( array( 'icon_value' => 'icon_lightbulb', 'text' => __( 'Ideas and concepts','shop-isle' ), 'subtext' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.','shop-isle' ) ), array( 'icon_value' => 'icon_tools', 'text' => __( 'Designs & interfaces','shop-isle' ), 'subtext' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.','shop-isle' ) ), array( 'icon_value' => 'icon_cogs', 'text' => __( 'Highly customizable','shop-isle' ), 'subtext' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.','shop-isle' ) ), array( 'icon_value' => 'icon_like', 'text' => __( 'Easy to use','shop-isle' ), 'subtext' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.','shop-isle' ) ) ) ) );
+				$shop_isle_advantages = get_theme_mod( 'shop_isle_advantages',json_encode( array(
+					array(
+						'icon_value' => 'icon_lightbulb',
+						'text' => __( 'Ideas and concepts','shop-isle' ),
+						'subtext' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.','shop-isle' ),
+					),
+					array(
+						'icon_value' => 'icon_tools',
+						'text' => __( 'Designs & interfaces','shop-isle' ),
+						'subtext' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.','shop-isle' ),
+					),
+					array(
+						'icon_value' => 'icon_cogs',
+						'text' => __( 'Highly customizable','shop-isle' ),
+						'subtext' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.','shop-isle' ),
+					),
+					array(
+						'icon_value' => 'icon_like',
+						'text' => __( 'Easy to use','shop-isle' ),
+						'subtext' => __( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.','shop-isle' ),
+					),
+				) ) );
 
 				if ( ! empty( $shop_isle_advantages ) ) :
 
